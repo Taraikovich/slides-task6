@@ -15,17 +15,20 @@ const Slides = ({ user }: { user: string }) => {
         else console.log('Inserted:', nick);
       }
 
-      async function getUsers() {
-        const { data: chat, error } = await supabase.from('users').select('*');
-        if (error) console.error('Read Error:', error);
-        else setUsers(() => chat.map((user) => user.nick));
-      }
-
       insertData(user);
       isInserted.current = true;
-      getUsers();
     }
 
+    async function getUsers() {
+      const { data, error } = await supabase.from('users').select('*');
+      if (error) console.error('Read Error:', error);
+      else {
+        const users = data ? [...data.map((user) => user.nick)] : [];
+        setUsers(() => [...users]);
+      }
+    }
+
+    getUsers();
     const channel = supabase
       .channel('realtime')
       .on(
