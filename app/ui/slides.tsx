@@ -24,7 +24,7 @@ const Slides = ({ user }: { user: string }) => {
       if (error) console.error('Read Error:', error);
       else {
         const users = data ? [...data.map((user) => user.nick)] : [];
-        setUsers(() => [...users]);
+        setUsers((perv) => [...perv, ...users]);
       }
     }
 
